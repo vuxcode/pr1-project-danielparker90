@@ -48,21 +48,45 @@
     }
  
     </style>
-    <script></script>
     <title>Dave The Dragon</title>
-
+    
+  </head>
     <body>
-        <div class="game">
+      <div class="game">
         <h1>Dave The Dragon</h1>
         <div id="game-text">You are standing alone in a cave and big boy Dave approaches....</div>
         <div class="options">
-            <button onclick="chooseOption('attack')">Attack</button>
-            <button onclick="chooseOption('defend')">Defend</button>
-            <button onclick="chooseOption('run away')">Run-Away</button>
-            
-            </div>
+          <button onclick="chooseOption('attack')">Attack</button>
+          <button onclick="chooseOption('defend')">Defend</button>
+          <button onclick="chooseOption('run away')">Run-Away</button>
+          
         </div>
+      </div>
+      <script>
+        // 
+
+        var output= document.getElementById("game-text")
+        console.log(output);
+        
+        function chooseOption ( options ){ 
+            
+            // HOW DO WE KNOW WHICH BUTTON HAS BEEN PUSHED?
+            console.log(options)
+            if ( options== "attack" ){
+                output.innerText= "Yes you did damage";
+            }
+            output.innerText= "some text here";
+
+            // WHAT IF...
+
+
+        }
+    
+        
+        
+
+
+      </script>
     </body>
-    </head>
    
 </html>
