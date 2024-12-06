@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #ff4747;
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .health-bars {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .health-bar {
+            width: 45%;
+            text-align: left;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .bar {
+            height: 20px;
+            background: #e53935;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .game-text {
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+
+        .options button {
+            background-color: #ff4747;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+            border-radius: 5px;
+        }
+
+        .options button:hover {
+            background-color: #ff6666;
+            transform: scale(1.1);
+        }
+
+        .options button:active {
+            background-color: #ff4747;
+            transform: scale(1);
+        }
+
+        .try-again-button {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .try-again-button button {
+            background-color: #ff4747;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+            border-radius: 5px;
+        }
+
+        .try-again-button button:hover {
+            background-color: #ff6666;
+            transform: scale(1.1);
+        }
+
+        .try-again-button button:active {
+            background-color: #ff4747;
+            transform: scale(1);
+        }
+
+    </style>
+    <title>Dave The Dragon</title>
+</head>
+
+<body>
+    <div class="game">
+        <h1>Dave The Dragon</h1>
+        <div class="health-bars">
+            <div class="health-bar">
+                <p class="label">Player</p>
+                <div class="bar" id="player-health" style="width: 100%;"></div>
+            </div>
+            <div class="health-bar">
+                <p class="label">Dragon</p>
+                <div class="bar" id="dragon-health" style="width: 100%;"></div>
+            </div>
+        </div>
+        <div id="game-text">You are standing alone in a cave and big boy Dave approaches. What will you do?</div>
+        <div class="options">
+            <button onclick="chooseOption('attack')">Attack</button>
+            <button onclick="chooseOption('defend')">Defend</button>
+            <button onclick="chooseOption('run away')">Run Away</button>
+        </div>
+        
+        <div class="try-again-button" id="try-again-button">
+            <button onclick="restartGame()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        var playerHealth = 100;
+        var dragonHealth = 100;
+
+        function chooseOption(action) {
+            var gameText = document.getElementById("game-text");
+            var playerBar = document.getElementById("player-health");
+            var dragonBar = document.getElementById("dragon-health");
+
+            console.log('Action chosen:', action);
+
+            if (playerHealth === 0 || dragonHealth === 0) {
+                console.log('Game over, action not processed.');
+                return;
+            }
+
+            if (action === "attack") {
+                attackAction(gameText);
+            } else if (action === "defend") {
+                defendAction(gameText);
+            } else if (action === "run away") {
+                runAction(gameText);
+            }
+
+            updateHealthBars(playerBar, dragonBar);
+            checkGameOver(gameText);
+        }
+
+        function attackAction(gameText) {
+            var playerDamage = Math.floor(Math.random() * 15) + 10;
+            var dragonDamage = Math.floor(Math.random() * 20) + 5;
+
+            dragonHealth -= playerDamage;
+            playerHealth -= dragonDamage;
+
+            console.log('Attack: Player damage:', playerDamage, 'Dragon damage:', dragonDamage);
+
+            gameText.innerText =
+                "You attack the dragon on its dome, dealing " +
+                playerDamage +
+                " damage! The dragon strikes back and deals " +
+                dragonDamage +
+                " damage to you!";
+        }
+
+        function defendAction(gameText) {
+            var dragonDamage = Math.floor(Math.random() * 10) + 5;
+
+            playerHealth -= dragonDamage;
+            console.log('Defend: Player takes', dragonDamage, 'damage');
+
+            gameText.innerText =
+                "You raise your shield but Dave knocks you to the floor, taking " +
+                dragonDamage +
+                " reduced damage.";
+        }
+
+        function runAction(gameText) {
+            console.log('Player runs away'); 
+            gameText.innerText =
+                "You decide to run away. The dragon lets out a triumphant roar and you cower to The Winchester and wait for all this to blow over.";
+
+            showTryAgainButton();
+        }
+
+        function showTryAgainButton() {
+            console.log('Showing Try Again button');
+            document.getElementById('try-again-button').style.display = 'block';
+        }
+
+        function restartGame() {
+            console.log('Restarting game'); 
+
+            playerHealth = 100;
+            dragonHealth = 100;
+
+            var gameText = document.getElementById("game-text");
+            gameText.innerText = "You are standing alone in a cave and big boy Dave approaches. What will you do?";
+            
+            document.getElementById('try-again-button').style.display = 'none';
+
+            var playerBar = document.getElementById("player-health");
+            var dragonBar = document.getElementById("dragon-health");
+            updateHealthBars(playerBar, dragonBar);
+        }
+
+        function updateHealthBars(playerBar, dragonBar) {
+            playerHealth = Math.max(playerHealth, 0); 
+            dragonHealth = Math.max(dragonHealth, 0);
+
+            playerBar.style.width = playerHealth + "%";
+            dragonBar.style.width = dragonHealth + "%";
+        }
+
+        function checkGameOver(gameText) {
+            if (playerHealth === 0) {
+                console.log('Player defeated, game over');
+                gameText.innerText = "You have been defeated by the dragon. He now devours on your flesh! Game Over!";
+                showTryAgainButton();
+            } else if (dragonHealth === 0) {
+                console.log('Dragon defeated, player wins');
+                gameText.innerText = "You have slain the dragon time to go down the pub for a well earned pint!";
+                showTryAgainButton();
+            }
+        }
+    </script>
+</body>
+
+</html>
