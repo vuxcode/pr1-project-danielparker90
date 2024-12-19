@@ -9,7 +9,9 @@ The final program is not the goal! The aim of the project is to show how you hav
 
 # Project Notes
 
-> You can use this section of the file to keep notes about your project as you work on it.
+>My project was to create a simple text based adventure game to show what we learned in the lessons I had attened.
+Game Title: Dave The Dragon
+>Goal: Beat the dragon before you die.
 
 # Project Summary
 
